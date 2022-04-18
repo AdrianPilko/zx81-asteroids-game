@@ -97,7 +97,7 @@ credits_and_version_2
 randomBytes	
 	DEFB 0,0,0,1,0,0,0,1,0,0,1,0,1,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 postRandomBytes
-	DEFB 0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,1		
+	DEFB 1,0,1,1,0,0,0,0,1,0,1,0,1,0,0,1,0,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,1		
 indexToRandom
 	DEFB 0,0
 to_print .equ to_print_mem ;use printByte16
@@ -326,16 +326,13 @@ noSpaceshipMove
 	ld hl,(D_FILE) ;initialise space start memory address (just top left)
 	inc hl
 	ld (initAsteroidCount), hl	
-	ld hl,$1fff ;source of random bytes in ROM
-	push hl
 generateNewAsteroidLine  
-	pop hl
-	push hl
-	ld d,0
-	ld e,c
+	ld hl,$1fff ;source of random bytes in ROM
+	ld d,h
+	ld e,l
 	add hl, de
 	ld a,(hl)	
-	and %00100101
+	and 1
 	jr nz, placeAsteroid2
 	;if not zero place free space
 	ld a, NOT_ASTEROID_CHARACTER_CODE
@@ -350,8 +347,7 @@ placeAsteroid2
 	
 noRoid2	
 	inc hl
-	ld (initAsteroidCount), hl
-	
+	ld (initAsteroidCount), hl	
 	djnz generateNewAsteroidLine	
 	
 	
@@ -391,7 +387,7 @@ printScoreInGame
 	ld (speedUpLevelCounter), hl
 
 	;ld bc, (speedUpLevelCounter)
-	ld bc, $00ff
+	ld bc, $02ff
 waitloop
 	dec bc
 	ld a,b
