@@ -1,5 +1,5 @@
 REM clean up before calling assembler 
-del asteroids.p
+del asteroids.p 
 del asteroids.lst
 del asteroids.sym
 

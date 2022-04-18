@@ -1,4 +1,4 @@
-;this is the end of line 1 - the REM	 		
+;this is the end of line 1 - the REM 	 		
 				DEFB $76                        ; Newline				
 ;followed by the the RAND USR line				
 Line1End       

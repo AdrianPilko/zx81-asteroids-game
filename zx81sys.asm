@@ -1,7 +1,7 @@
 ;system variables
 ;Origin of a ZX81 file is always 16393 
 
-                ORG 16393
+                ORG 16393 
                 
 ; System variables live here
 VERSN:          DEFB 0
