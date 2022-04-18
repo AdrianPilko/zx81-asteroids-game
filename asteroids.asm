@@ -1,4 +1,4 @@
-;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;; 
 ;;;
 ;;; Asteroids game for  zx81 by Adrian Pilkington
 ;;; "dodge the flying rocks!!!"
