@@ -216,7 +216,7 @@ read_start_key
 main
 	call CLS
 	ld a, 7
-	ld (initialSpaceshipLeftCountDown),a
+	ld (initialSpaceshipLeftCountDown),a 
 	
 	ld a, 0						; initialise score to zero
 	ld (score_mem_tens),a
