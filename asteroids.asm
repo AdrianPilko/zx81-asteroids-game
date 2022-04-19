@@ -37,7 +37,7 @@
 ;blank space
 #define NOT_ASTEROID_CHARACTER_CODE 0
 ;black grey block
-#define ASTEROID_CHARACTER_CODE 4
+#define ASTEROID_CHARACTER_CODE 136
 #define GREY_SQAURE 8  
 
 ; keyboard port for shift key to v
@@ -64,11 +64,14 @@ title_screen_txt
 	DEFB	_Z,_X,_8,_1,__,_A,_S,_T,_E,_R,_O,_I,_D,_S,__,__,$ff
 keys_screen_txt
 	DEFB	_S,__,_T,_O,__,_S,_T,_A,_R,_T,26,__,_Z,__,_L,_E,_F,_T,26,__,_M,__,_R,_I,_G,_H,_T,$ff
+game_objective_txt
+	DEFB	_D,_O,_D,_G,_E,__,_T,_H,_E,__,_A,_S,_T,_E,_R,_O,_I,_D,_S,__,_T,_O,__,_L,_I,_V,_E,$ff
+	
 last_Score_txt
 	DEFB	21,21,21,21,_L,_A,_S,_T,__,__,_S,_C,_O,_R,_E,21,21,21,21,$ff	
 high_Score_txt
 	DEFB	21,21,21,21,_H,_I,_G,_H,__,__,_S,_C,_O,_R,_E,21,21,21,21,$ff		
-chequrered_flag		
+titleBanner		
 	DEFB	4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,$ff		
 initAsteroidCount		
 	DEFB	0,$ff			
@@ -95,7 +98,7 @@ credits_and_version_1
 credits_and_version_2
 	DEFB __,__,__,__,__,__,_2,_0,_2,_2,__,__,__,__,__,$ff
 randomBytes	
-	DEFB 0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0
+	DEFB 0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 indexToRandom
 	DEFB 0,0
 to_print .equ to_print_mem ;use printByte16
@@ -159,28 +162,20 @@ setHighScoreZero
 intro_title
 	call CLS	
 	ld bc,1
-	ld de,chequrered_flag
+	ld de,titleBanner
 	call printstring	
 	ld bc,34
-	ld de,chequrered_flag
+	ld de,titleBanner
 	call printstring		
-	ld bc,110
+	ld bc,109
 	ld de,title_screen_txt
 	call printstring
 	ld bc,202
 	ld de,keys_screen_txt
+	call printstring		
+	ld bc,334
+	ld de,game_objective_txt
 	call printstring	
-	;ld bc,337
-	;ld de,high_Score_txt
-	;call printstring	
-	;ld b, 11			; b is row to print in
-	;ld c, 13			; c is column
-    ;ld a, (high_score_mem_hund) ; load hundreds
-	;call printByte    
-	;ld b, 11			; b is row to print in
-	;ld c, 15			; c is column
-	;ld a, (high_score_mem_tens) ; load tens		
-	;call printByte	
 	ld bc,436
 	ld de,last_Score_txt
 	call printstring	
@@ -192,7 +187,6 @@ intro_title
 	ld c, 15			; c is column
 	ld a, (last_score_mem_tens) ; load tens		
 	call printByte	
-
 	ld bc,537	
 	ld de,credits_and_version_1
 	call printstring		
@@ -201,10 +195,10 @@ intro_title
 	call printstring	
 	
 	ld bc,727
-	ld de,chequrered_flag
+	ld de,titleBanner
 	call printstring		
 	ld bc,760
-	ld de,chequrered_flag
+	ld de,titleBanner
 	call printstring	
 
 read_start_key
@@ -225,7 +219,7 @@ main
 	ld a, 0						; initialise score to zero
 	ld (score_mem_thou),a	
 
-	ld bc, $0aff					; set initial difficulty
+	ld bc, $04ff					; set initial difficulty
 	ld (speedUpLevelCounter), bc
 	ld bc,0
 	
