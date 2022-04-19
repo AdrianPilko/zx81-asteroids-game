@@ -95,9 +95,7 @@ credits_and_version_1
 credits_and_version_2
 	DEFB __,__,__,__,__,__,_2,_0,_2,_2,__,__,__,__,__,$ff
 randomBytes	
-	DEFB 0,0,0,1,0,0,0,1,0,0,1,0,1,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-postRandomBytes
-	DEFB 1,0,1,1,0,0,0,0,1,0,1,0,1,0,0,1,0,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,1		
+	DEFB 0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0
 indexToRandom
 	DEFB 0,0
 to_print .equ to_print_mem ;use printByte16
@@ -227,7 +225,7 @@ main
 	ld a, 0						; initialise score to zero
 	ld (score_mem_thou),a	
 
-	ld bc, $03ff					; set initial difficulty
+	ld bc, $0aff					; set initial difficulty
 	ld (speedUpLevelCounter), bc
 	ld bc,0
 	
@@ -327,14 +325,16 @@ noSpaceshipMove
 	inc hl
 	ld (initAsteroidCount), hl	
 generateNewAsteroidLine  
-	ld hl,$1fff ;source of random bytes in ROM
-	ld d,h
-	ld e,l
+	call random
+	;jr nz, placeAsteroid2
+	;if not zero place free space
+	ld de, randomBytes
+	ld l, a
+	ld h, 0
 	add hl, de
-	ld a,(hl)	
+	ld a, (hl)
 	and 1
 	jr nz, placeAsteroid2
-	;if not zero place free space
 	ld a, NOT_ASTEROID_CHARACTER_CODE
 	ld hl,(initAsteroidCount)
 	ld (hl),a    			; asteroids starts as random line of character
@@ -386,8 +386,8 @@ printScoreInGame
 	dec hl 
 	ld (speedUpLevelCounter), hl
 
-	;ld bc, (speedUpLevelCounter)
-	ld bc, $02ff
+	ld bc, (speedUpLevelCounter)
+	;ld bc, $02ff
 waitloop
 	dec bc
 	ld a,b
@@ -435,6 +435,23 @@ printstring_loop
 	jr printstring_loop
 printstring_end	
 	ret
+	
+random 
+	ld hl,(FRAMES)
+random_seed 
+	ld de,0
+	add hl,de
+	dec hl
+	ld a,h
+	and $1f
+	ld h,a
+	ld (random_seed+1),hl
+	ld a,(hl)
+foundRandom 
+	sub b
+	jr nc,foundRandom
+	adc a,b
+	ret 	
 	
 ;include our variables
 #include "vars.asm"
